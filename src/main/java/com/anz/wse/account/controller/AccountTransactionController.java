@@ -1,8 +1,6 @@
 package com.anz.wse.account.controller;
 
-import com.anz.wse.account.dto.AccountDTO;
 import com.anz.wse.account.dto.AccountTransactionDTO;
-import com.anz.wse.account.service.AccountService;
 import com.anz.wse.account.service.AccountTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
