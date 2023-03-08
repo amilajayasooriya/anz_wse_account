@@ -1,11 +1,11 @@
 package com.anz.wse.account.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum TransactionType {
-    CREDIT("Credit"), DEBIT("Debit");
-    private String transactionType;
+    CREDIT("CREDIT"), DEBIT("CREDIT");
+    private final String transactionType;
 }

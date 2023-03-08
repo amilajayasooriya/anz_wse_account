@@ -1,26 +1,29 @@
-package com.anz.wse.account.model;
+package com.anz.wse.account.dto;
 
-import jakarta.persistence.*;
+import com.anz.wse.account.model.Currency;
+import com.anz.wse.account.model.TransactionType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class AccountTransaction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AccountTransactionDTO {
     private int id;
     private String accountNumber;
     private Date valueDate;
-    @Enumerated(EnumType.STRING)
     private Currency currency;
     private BigDecimal debitAmount;
     private BigDecimal creditAmount;
+
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     private String transactionNarrative;
