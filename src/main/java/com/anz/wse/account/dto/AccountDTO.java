@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,7 +18,7 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AccountDTO {
+public class AccountDTO extends RepresentationModel<AccountDTO> {
 
     private int id;
 

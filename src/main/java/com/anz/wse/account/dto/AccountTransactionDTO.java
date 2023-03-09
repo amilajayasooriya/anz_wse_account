@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,7 +21,7 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AccountTransactionDTO {
+public class AccountTransactionDTO extends RepresentationModel<AccountTransactionDTO> {
 
     @NotNull
     private int id;
@@ -35,11 +36,14 @@ public class AccountTransactionDTO {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
     private BigDecimal debitAmount;
+
     private BigDecimal creditAmount;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
+
     private String transactionNarrative;
 }
