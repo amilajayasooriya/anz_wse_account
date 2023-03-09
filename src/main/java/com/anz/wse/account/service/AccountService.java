@@ -20,15 +20,15 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
 
-    public Optional<AccountDTO> getAccount(String accountNumber) {
+    public Optional<AccountDTO> getAccount(int userId, String accountNumber) {
         log.debug("message=\"Get account request received\"");
 
-        Optional<Account> accountOptional = accountRepository.findByAccountNumber(accountNumber);
+        Optional<Account> accountOptional = accountRepository.findByUserIdAndAccountNumber(userId, accountNumber);
         return accountOptional.map(account -> modelMapper.map(account, AccountDTO.class));
     }
 
-    public Page<AccountDTO> getAccounts(Pageable pageable) {
+    public Page<AccountDTO> getAccounts(int userId, Pageable pageable) {
         log.debug("message=\"Get account list request received\"");
-        return accountRepository.findAll(pageable).map(account -> modelMapper.map(account, AccountDTO.class));
+        return accountRepository.findByUserId(userId, pageable).map(account -> modelMapper.map(account, AccountDTO.class));
     }
 }

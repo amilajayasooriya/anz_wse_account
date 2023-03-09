@@ -34,8 +34,10 @@ public class AccountController {
                                                         @RequestHeader("x-authToken") String authToken,
                                                         @RequestHeader("x-correlationId") String correlationId) {
 
+        int  userId = authService.getUserIdFromAuthToken(authToken);
+
         log.debug("message=\"Get account request received\"");
-        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(accountNumber).
+        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(userId, accountNumber).
                 map(accountDTO ->  accountDTO.add(linkTo(methodOn(AccountTransactionController.class).
                 getAccountTransaction(accountDTO.getAccountNumber(), 0, 20, "id", authToken, correlationId))
                         .withRel("account-transaction")));
@@ -50,15 +52,10 @@ public class AccountController {
                                                         @RequestHeader("x-authToken") String authToken,
                                                         @RequestHeader("x-correlationId") String correlationId) {
 
-     /*   int userId;
-        try {
-            userId = authService.getUserIdFromAuthToken(authToken);
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-*/
+        int  userId = authService.getUserIdFromAuthToken(authToken);
+
         log.debug("message=\"Get account list request received\"");
-        Page<AccountDTO> accountDTOPage = accountService.getAccounts(PageRequest.of(page, size, Sort.by(sortBy))).
+        Page<AccountDTO> accountDTOPage = accountService.getAccounts(userId, PageRequest.of(page, size, Sort.by(sortBy))).
                 map(accountDTO -> {
                     accountDTO.add(linkTo(methodOn(AccountController.class).
                         getAccount(accountDTO.getAccountNumber(), authToken, correlationId)).withSelfRel());

@@ -18,9 +18,10 @@ public class AccountTransactionService {
     private final AccountTransactionRepository accountTransactionRepository;
     private final ModelMapper modelMapper;
 
-    public Page<AccountTransactionDTO> getAccountTransaction(String accountNumber, Pageable pageable) {
+    public Page<AccountTransactionDTO> getAccountTransaction(int userId, String accountNumber, Pageable pageable) {
         log.debug("message=\"Get account transaction request received\"");
-        Page<AccountTransaction> accountTransactionDTOOptional = accountTransactionRepository.findByAccountAccountNumber(accountNumber, pageable);
+        Page<AccountTransaction> accountTransactionDTOOptional = accountTransactionRepository.
+                findByAccountUserIdAndAccountAccountNumber(userId, accountNumber, pageable);
         if (accountTransactionDTOOptional.isEmpty()) {
             log.info("message=\"No account transactions found for the account number\"");
         }
