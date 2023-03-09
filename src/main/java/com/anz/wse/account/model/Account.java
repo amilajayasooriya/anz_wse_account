@@ -3,8 +3,7 @@ package com.anz.wse.account.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +14,9 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
