@@ -5,9 +5,9 @@ import com.anz.wse.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -17,7 +17,8 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
 
-    public List<AccountDTO> getAccounts(){
-        return accountRepository.findAll().stream().map(account -> modelMapper.map(account, AccountDTO.class)).toList();
+    public Page<AccountDTO> getAccounts(Pageable pageable){
+        log.debug("message=\"Get account request received\"");
+        return accountRepository.findAll(pageable).map(account -> modelMapper.map(account, AccountDTO.class));
     }
 }

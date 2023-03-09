@@ -1,6 +1,7 @@
 package com.anz.wse.account.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +16,22 @@ public class AccountTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String accountNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    @NotNull
+    private Account account;
+
+    @NotNull
     private Date valueDate;
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
+
     private BigDecimal debitAmount;
+
     private BigDecimal creditAmount;
+
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TransactionType transactionType;
+
     private String transactionNarrative;
 }
