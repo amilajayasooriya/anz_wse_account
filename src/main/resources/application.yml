@@ -1,7 +1,11 @@
 server:
   port: 10910
+  servlet:
+    context-path: /wse-accounts
 
 spring:
+  application:
+    name: wse-accounts
   datasource:
     url: jdbc:h2:mem:account
     username: sa
@@ -16,3 +20,12 @@ spring:
         format_sql:true
   h2:
     console.enabled: true
+
+logging:
+  file:
+    name: accounts-service.log
+  pattern:
+    console: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"
+    file: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"
+  level:
+    root: DEBUG
