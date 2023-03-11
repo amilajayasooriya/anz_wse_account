@@ -6,10 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -21,6 +18,7 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class AccountTransactionDTO extends RepresentationModel<AccountTransactionDTO> {
 
     @NotNull
@@ -46,4 +44,36 @@ public class AccountTransactionDTO extends RepresentationModel<AccountTransactio
     private TransactionType transactionType;
 
     private String transactionNarrative;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AccountTransactionDTO that = (AccountTransactionDTO) o;
+
+        if (id != that.id) return false;
+        if (!accountNumber.equals(that.accountNumber)) return false;
+        if (!valueDate.equals(that.valueDate)) return false;
+        if (currency != that.currency) return false;
+        if (!debitAmount.equals(that.debitAmount)) return false;
+        if (!creditAmount.equals(that.creditAmount)) return false;
+        if (transactionType != that.transactionType) return false;
+        return transactionNarrative.equals(that.transactionNarrative);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + id;
+        result = 31 * result + accountNumber.hashCode();
+        result = 31 * result + valueDate.hashCode();
+        result = 31 * result + currency.hashCode();
+        result = 31 * result + debitAmount.hashCode();
+        result = 31 * result + creditAmount.hashCode();
+        result = 31 * result + transactionType.hashCode();
+        result = 31 * result + transactionNarrative.hashCode();
+        return result;
+    }
 }
