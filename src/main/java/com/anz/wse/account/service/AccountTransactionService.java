@@ -20,12 +20,12 @@ public class AccountTransactionService {
 
     public Page<AccountTransactionDTO> getAccountTransaction(int userId, String accountNumber, Pageable pageable) {
         log.debug("message=\"Get account transaction request received\"");
-        Page<AccountTransaction> accountTransactionDTOOptional = accountTransactionRepository.
+        Page<AccountTransaction> accountTransactionPage = accountTransactionRepository.
                 findByAccountUserIdAndAccountAccountNumber(userId, accountNumber, pageable);
-        if (accountTransactionDTOOptional.isEmpty()) {
+        if (accountTransactionPage.isEmpty()) {
             log.info("message=\"No account transactions found for the account number\"");
         }
 
-        return accountTransactionDTOOptional.map(accountTransaction -> modelMapper.map(accountTransaction, AccountTransactionDTO.class));
+        return accountTransactionPage.map(accountTransaction -> modelMapper.map(accountTransaction, AccountTransactionDTO.class));
     }
 }

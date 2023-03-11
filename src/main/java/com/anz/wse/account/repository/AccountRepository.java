@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    public Optional<Account> findByUserIdAndAccountNumber(int userId, String accountNumber);
+    Optional<Account> findByUserIdAndAccountNumber(int userId, String accountNumber);
 
     Page<Account> findByUserId(int userId, Pageable pageable);
 }
