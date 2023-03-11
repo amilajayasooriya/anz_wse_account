@@ -25,6 +25,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
+
 
 /*	implementation 'org.springframework.boot:spring-boot-starter-security'*/
 /*	implementation 'org.flywaydb:flyway-core'*/
