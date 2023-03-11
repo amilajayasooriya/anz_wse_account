@@ -7,49 +7,97 @@ import com.anz.wse.account.repository.AccountRepository;
 import com.anz.wse.account.service.AccountService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class AccountServiceTest {
 
-    @Autowired
+    @InjectMocks
     private AccountService accountService;
 
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private ModelMapper modelMapper;
+
     @Test
-    public void get_accounts_success() {
-        Page<Account> accountPage = getAccountPage();
-        when(accountRepository.findByUserId(anyInt(), any())).thenReturn(accountPage);
+    public void get_accounts_list_success() {
+        AccountDTO mockAccountDTO = getAccountDTOPage();
+        when(accountRepository.findByUserId(anyInt(), any())).thenReturn(getAccountPage());
+        when(modelMapper.map(any(Account.class), any())).thenReturn(mockAccountDTO);
 
-        Page<AccountDTO> accountDTOPage = accountService.getAccounts(1, Pageable.ofSize(10));
+        Page<AccountDTO> accountFromServicePage = accountService.getAccounts(1, Pageable.ofSize(10));
 
-        Assertions.assertFalse(accountPage.isEmpty());
-        Assertions.assertEquals(1, accountPage.getSize());
+        Assertions.assertFalse(accountFromServicePage.isEmpty());
+        Assertions.assertEquals(1, accountFromServicePage.getSize());
 
-        AccountDTO accountDTO = accountDTOPage.getContent().get(0);
-        Account account = accountPage.getContent().get(0);
-        Assertions.assertEquals(account.getAccountNumber(), accountDTO.getAccountNumber());
-        Assertions.assertEquals(account.getAccountType(), accountDTO.getAccountType());
-        Assertions.assertEquals(account.getBalance(), accountDTO.getBalance());
+        AccountDTO accountDTO = accountFromServicePage.getContent().get(0);
+
+        Assertions.assertEquals(mockAccountDTO.getAccountNumber(), accountDTO.getAccountNumber());
+        Assertions.assertEquals(mockAccountDTO.getAccountType(), accountDTO.getAccountType());
+        Assertions.assertEquals(mockAccountDTO.getBalance(), accountDTO.getBalance());
     }
 
-    private static Page<Account> getAccountPage() {
+    @Test
+    public void get_accounts_list_no_results() {
+        when(accountRepository.findByUserId(anyInt(), any())).thenReturn(getAccountPage());
+        when(modelMapper.map(any(Account.class), any())).thenReturn(null);
+
+        Page<AccountDTO> accountFromServicePage = accountService.getAccounts(2, Pageable.ofSize(10));
+        Assertions.assertFalse(accountFromServicePage.isEmpty());
+        Assertions.assertNull(accountFromServicePage.getContent().get(0));
+    }
+
+    @Test
+    public void get_accounts_one_account_success() {
+        AccountDTO mockAccountDTO = getAccountDTOPage();
+        when(accountRepository.findByUserIdAndAccountNumber(anyInt(), anyString())).thenReturn(getAccountOptional());
+        when(modelMapper.map(any(Account.class), any())).thenReturn(mockAccountDTO);
+
+        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(1, "234643444");
+        Assertions.assertTrue(accountDTOOptional.isPresent());
+        Assertions.assertEquals(accountDTOOptional.get(), mockAccountDTO);
+    }
+
+    @Test
+    public void get_accounts_one_account_invalid_userid_or_account_number() {
+        when(accountRepository.findByUserIdAndAccountNumber(anyInt(), anyString())).thenReturn(Optional.empty());
+
+        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(1, "234643444");
+        Assertions.assertTrue(accountDTOOptional.isEmpty());
+    }
+
+    public Optional<Account> getAccountOptional() {
+        return Optional.of(Account.builder().build());
+    }
+
+    private Page<Account> getAccountPage() {
         Account account = Account.builder().
+                build();
+
+        return new PageImpl<>(Collections.singletonList(account));
+    }
+
+    private AccountDTO getAccountDTOPage() {
+        return AccountDTO.builder().
                 id(1).
                 accountName("SG Savings").
                 accountNumber("548795663").
@@ -57,7 +105,5 @@ public class AccountServiceTest {
                 balanceDate(new Date()).
                 currency(Currency.SGD).
                 balance(BigDecimal.valueOf(69845.35)).build();
-
-        return new PageImpl<>(Collections.singletonList(account));
     }
 }

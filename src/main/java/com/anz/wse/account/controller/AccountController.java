@@ -29,7 +29,7 @@ public class AccountController {
     private final AccountService accountService;
     private final AuthService authService;
 
-    @GetMapping("/v1/account/{accountNumber}")
+    @GetMapping("/v1/accounts/{accountNumber}")
     public ResponseEntity<AccountDTO> getAccount(@PathVariable @Valid @Pattern(regexp = ACCOUNT_NUMBER, message = "Invalid account number format") final String accountNumber,
                                                         @RequestHeader("x-authToken") String authToken,
                                                         @RequestHeader("x-correlationId") String correlationId) {
@@ -45,7 +45,7 @@ public class AccountController {
         return ResponseEntity.of(accountDTOOptional);
     }
 
-    @GetMapping("/v1/account")
+    @GetMapping("/v1/accounts")
     public ResponseEntity<Page<AccountDTO>> getAccounts(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "20") int size,
                                                         @RequestParam(defaultValue = "id") String sortBy,

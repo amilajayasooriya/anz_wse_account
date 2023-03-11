@@ -29,7 +29,7 @@ public class AccountTransactionController {
     private final AccountTransactionService accountTransactionService;
     private final AuthService authService;
 
-    @GetMapping("/v1/account-transaction/{accountNumber}")
+    @GetMapping("/v1/account-transactions/{accountNumber}")
     public ResponseEntity<Page<AccountTransactionDTO>> getAccountTransaction(@PathVariable @Valid @Pattern(regexp = ACCOUNT_NUMBER,
             message = "Invalid account number format") final String accountNumber,
                                                                              @RequestParam(defaultValue = "0") int page,
@@ -40,7 +40,7 @@ public class AccountTransactionController {
 
         int userId = authService.getUserIdFromAuthToken(authToken);
 
-        log.debug("message=\"Get account transaction request received\"");
+        log.debug("message=\"Get account transactions request received\"");
         Page<AccountTransactionDTO> accountTransactionDTOPage = accountTransactionService.getAccountTransaction(userId, accountNumber,
                         PageRequest.of(page, size, Sort.by(sortBy))).
                 map(accountTransactionDTO -> accountTransactionDTO.add(linkTo(methodOn(AccountController.class).

@@ -48,5 +48,6 @@ public class Account {
     private BigDecimal balance;
 
     @OneToMany
+    @JoinColumn(name = "account_id")
     private List<AccountTransaction> accountTransactions;
 }

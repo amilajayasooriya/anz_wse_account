@@ -3,10 +3,7 @@ package com.anz.wse.account.dto;
 import com.anz.wse.account.model.Currency;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -18,6 +15,7 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class AccountDTO extends RepresentationModel<AccountDTO> {
 
     private int id;
@@ -40,4 +38,34 @@ public class AccountDTO extends RepresentationModel<AccountDTO> {
 
     @NotNull
     private BigDecimal balance;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AccountDTO that = (AccountDTO) o;
+
+        if (id != that.id) return false;
+        if (!accountNumber.equals(that.accountNumber)) return false;
+        if (!accountName.equals(that.accountName)) return false;
+        if (!accountType.equals(that.accountType)) return false;
+        if (!balanceDate.equals(that.balanceDate)) return false;
+        if (currency != that.currency) return false;
+        return balance.equals(that.balance);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + id;
+        result = 31 * result + accountNumber.hashCode();
+        result = 31 * result + accountName.hashCode();
+        result = 31 * result + accountType.hashCode();
+        result = 31 * result + balanceDate.hashCode();
+        result = 31 * result + currency.hashCode();
+        result = 31 * result + balance.hashCode();
+        return result;
+    }
 }
