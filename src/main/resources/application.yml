@@ -6,20 +6,6 @@ server:
 spring:
   application:
     name: wse-accounts
-  datasource:
-    url: jdbc:h2:mem:account;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  h2:
-    console.enabled: true
 
 logging:
   file:
@@ -27,5 +13,3 @@ logging:
   pattern:
     console: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"
     file: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"
-  level:
-    root: DEBUG

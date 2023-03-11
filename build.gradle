@@ -38,3 +38,12 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+springBoot {
+	buildInfo()
+}
+
+tasks.register('runDev') {
+	dependsOn 'bootRun'
+	bootRun.systemProperty('spring.profiles.active', 'dev')
+}

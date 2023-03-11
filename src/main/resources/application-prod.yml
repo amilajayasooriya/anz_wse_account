@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://aws.db.post:5214
+    username: prod_account
+    password: ENC(w2escwdeepafdsswdfdordfdd383hs==)
+    driverClassName: org.postgresql.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+
+logging:
+  level:
+    root: INFO
