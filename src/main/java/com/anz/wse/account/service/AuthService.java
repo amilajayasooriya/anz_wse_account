@@ -13,10 +13,18 @@ public class AuthService {
         String[] tokenParts = authToken.split(":");
 
         if (tokenParts.length != 2) {
-            log.error("Authentication token mismatch");
-            throw new IllegalArgumentException("Authentication token mismatch");
+            log.error("message=\"Authentication token mismatch\", error=\"ERROR 5145\"");
+            throw new IllegalArgumentException("Authentication token mismatch, ERROR 5145");
         }
 
-        return Integer.parseInt(tokenParts[1]);
+        int userId = -1;
+        try {
+            userId = Integer.parseInt(tokenParts[1]);
+        } catch (NumberFormatException e) {
+            log.error("message=\"Authentication token mismatch\", error=\"ERROR 5632\"");
+            throw new IllegalArgumentException("Authentication token mismatch, ERROR 5632");
+        }
+
+        return userId;
     }
 }

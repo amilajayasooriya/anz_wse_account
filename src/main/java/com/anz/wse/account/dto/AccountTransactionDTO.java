@@ -2,6 +2,7 @@ package com.anz.wse.account.dto;
 
 import com.anz.wse.account.model.Currency;
 import com.anz.wse.account.model.TransactionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 public class AccountTransactionDTO extends RepresentationModel<AccountTransactionDTO> {
 
     @NotNull
+    @JsonIgnore
     private int id;
 
     @NotNull

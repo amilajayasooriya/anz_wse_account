@@ -1,6 +1,7 @@
 package com.anz.wse.account.dto;
 
 import com.anz.wse.account.model.Currency;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -18,6 +19,8 @@ import static com.anz.wse.account.validation.RegexHelper.ACCOUNT_NUMBER;
 @Builder
 public class AccountDTO extends RepresentationModel<AccountDTO> {
 
+    @NotNull
+    @JsonIgnore
     private int id;
 
     @NotNull

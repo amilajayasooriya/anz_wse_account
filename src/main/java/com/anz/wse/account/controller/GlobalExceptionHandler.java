@@ -19,7 +19,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     private ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException e) {
-        log.error("ConstraintViolationException exception occurred");
+        log.error("ConstraintViolationException exception occurred", e);
         return new ResponseEntity<>(e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("IllegalArgumentException exception occurred", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

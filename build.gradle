@@ -27,7 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
 
-
 /*	implementation 'org.springframework.boot:spring-boot-starter-security'*/
 /*	implementation 'org.flywaydb:flyway-core'*/
 	compileOnly 'org.projectlombok:lombok'
@@ -35,6 +34,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.5'
+
 }
 
 tasks.named('test') {
