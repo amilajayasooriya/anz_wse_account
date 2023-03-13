@@ -1,5 +1,5 @@
 # anz_wse_account
-Sample project for interview purpose. This project include 3 api endpoints
+Sample project for interview purpose. This project include 3 api endpoints. Dev profile database configured as in memory H2 database.
 
 * retrieve accounts list for a customer
 * retrieve account for given account number
