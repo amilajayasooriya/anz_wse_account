@@ -1,5 +1,3 @@
-package blackbox.com.anz.wse.account;
-
 import com.anz.wse.account.AccountApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

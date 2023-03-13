@@ -1,4 +1,4 @@
-package com.anz.wse.account.model;
+package com.anz.wse.account.repository.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

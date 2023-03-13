@@ -1,7 +1,7 @@
 package com.anz.wse.account.dto;
 
-import com.anz.wse.account.model.Currency;
-import com.anz.wse.account.model.TransactionType;
+import com.anz.wse.account.repository.entity.Currency;
+import com.anz.wse.account.repository.entity.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

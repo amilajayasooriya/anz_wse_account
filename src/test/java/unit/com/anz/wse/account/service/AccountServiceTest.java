@@ -1,8 +1,9 @@
 package unit.com.anz.wse.account.service;
 
 import com.anz.wse.account.dto.AccountDTO;
-import com.anz.wse.account.model.Account;
-import com.anz.wse.account.model.Currency;
+import com.anz.wse.account.exception.ResourceNotFoundException;
+import com.anz.wse.account.repository.entity.Account;
+import com.anz.wse.account.repository.entity.Currency;
 import com.anz.wse.account.repository.AccountRepository;
 import com.anz.wse.account.service.AccountService;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -37,7 +37,7 @@ public class AccountServiceTest {
     private ModelMapper modelMapper;
 
     @Test
-    public void get_accounts_list_success() {
+    public void getAccounts_withValidInput_returnSuccess() {
         AccountDTO mockAccountDTO = getAccountDTO();
         when(accountRepository.findByUserId(anyInt(), any())).thenReturn(getAccountPage());
         when(modelMapper.map(any(Account.class), any())).thenReturn(mockAccountDTO);
@@ -50,36 +50,15 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void get_accounts_list_no_results() {
-        when(accountRepository.findByUserId(anyInt(), any())).thenReturn(getAccountPage());
-        when(modelMapper.map(any(Account.class), any())).thenReturn(null);
-
-        Page<AccountDTO> accountFromServicePage = accountService.getAccounts(2, Pageable.ofSize(10));
-        Assertions.assertFalse(accountFromServicePage.isEmpty());
-        Assertions.assertNull(accountFromServicePage.getContent().get(0));
+    public void getAccounts_withInvalidInput_throwsResourceNotFoundException() {
+        when(accountRepository.findByUserId(anyInt(), any())).thenReturn(Page.empty());
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> accountService.getAccounts(67, Pageable.ofSize(10)));
     }
 
     @Test
-    public void get_accounts_one_account_success() {
-        AccountDTO mockAccountDTO = getAccountDTO();
-        when(accountRepository.findByUserIdAndAccountNumber(anyInt(), anyString())).thenReturn(getAccountOptional());
-        when(modelMapper.map(any(Account.class), any())).thenReturn(mockAccountDTO);
-
-        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(1, "234643444");
-        Assertions.assertTrue(accountDTOOptional.isPresent());
-        Assertions.assertEquals(accountDTOOptional.get(), mockAccountDTO);
-    }
-
-    @Test
-    public void get_accounts_one_account_invalid_userid_or_account_number() {
-        when(accountRepository.findByUserIdAndAccountNumber(anyInt(), anyString())).thenReturn(Optional.empty());
-
-        Optional<AccountDTO> accountDTOOptional = accountService.getAccount(1, "234643444");
-        Assertions.assertTrue(accountDTOOptional.isEmpty());
-    }
-
-    public Optional<Account> getAccountOptional() {
-        return Optional.of(Account.builder().build());
+    public void getAccounts_withRuntimeExceptionInRepository_throwsRuntimeException() {
+        when(accountRepository.findByUserId(anyInt(), any())).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class, () -> accountService.getAccounts(67, Pageable.ofSize(10)));
     }
 
     private Page<Account> getAccountPage() {

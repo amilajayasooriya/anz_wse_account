@@ -1,6 +1,6 @@
 package com.anz.wse.account.dto;
 
-import com.anz.wse.account.model.Currency;
+import com.anz.wse.account.repository.entity.Currency;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

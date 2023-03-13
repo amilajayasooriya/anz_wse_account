@@ -67,7 +67,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:10910/wse-accounts/v1/account-transactions/585309209?page=0&size=2&sortBy=valueDate",
+					"raw": "localhost:10910/wse-accounts/v1/accounts/585309209/transactions?page=0&size=2&sortBy=valueDate",
 					"host": [
 						"localhost"
 					],
@@ -75,8 +75,9 @@
 					"path": [
 						"wse-accounts",
 						"v1",
-						"account-transactions",
-						"585309209"
+						"accounts",
+						"585309209",
+						"transactions"
 					],
 					"query": [
 						{
@@ -91,39 +92,6 @@
 							"key": "sortBy",
 							"value": "valueDate"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get one account",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-authToken",
-						"value": "ksujhse:1",
-						"type": "default"
-					},
-					{
-						"key": "x-correlationId",
-						"value": "correlation1",
-						"type": "default"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:10910/wse-accounts/v1/accounts/585309209",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "10910",
-					"path": [
-						"wse-accounts",
-						"v1",
-						"accounts",
-						"585309209"
 					]
 				}
 			},

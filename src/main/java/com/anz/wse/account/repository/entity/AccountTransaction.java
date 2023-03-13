@@ -1,4 +1,4 @@
-package com.anz.wse.account.model;
+package com.anz.wse.account.repository.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

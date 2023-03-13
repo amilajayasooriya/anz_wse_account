@@ -1,9 +1,10 @@
 package unit.com.anz.wse.account.service;
 
 import com.anz.wse.account.dto.AccountTransactionDTO;
-import com.anz.wse.account.model.AccountTransaction;
-import com.anz.wse.account.model.Currency;
-import com.anz.wse.account.model.TransactionType;
+import com.anz.wse.account.exception.ResourceNotFoundException;
+import com.anz.wse.account.repository.entity.AccountTransaction;
+import com.anz.wse.account.repository.entity.Currency;
+import com.anz.wse.account.repository.entity.TransactionType;
 import com.anz.wse.account.repository.AccountTransactionRepository;
 import com.anz.wse.account.service.AccountTransactionService;
 import org.junit.jupiter.api.Assertions;
@@ -37,7 +38,7 @@ public class AccountTransactionTest {
     private ModelMapper modelMapper;
 
     @Test
-    public void get_account_transaction_list_success() {
+    public void getAccountTransaction_withValidInput_returnSuccess() {
         AccountTransactionDTO mockAccountTransactionDTO = getAccountTransactionDTO();
         when(accountTransactionRepository.findByAccountUserIdAndAccountAccountNumber(anyInt(), anyString(), any())).thenReturn(getAccountTransactionPage());
         when(modelMapper.map(any(AccountTransaction.class), any())).thenReturn(mockAccountTransactionDTO);
@@ -51,14 +52,18 @@ public class AccountTransactionTest {
     }
 
     @Test
-    public void get_accounts_transaction_list_no_results() {
-        when(accountTransactionRepository.findByAccountUserIdAndAccountAccountNumber(anyInt(), anyString(), any())).thenReturn(getAccountTransactionPage());
-        when(modelMapper.map(any(AccountTransaction.class), any())).thenReturn(null);
+    public void getAccountTransaction_withInvalidInput_throwsResourceNotFoundException() {
+        when(accountTransactionRepository.findByAccountUserIdAndAccountAccountNumber(anyInt(), anyString(), any())).thenReturn(Page.empty());
 
-        Page<AccountTransactionDTO> accountTransactionFromServicePage = accountTransactionService.
-                getAccountTransaction(2, "097628372", Pageable.ofSize(10));
-        Assertions.assertFalse(accountTransactionFromServicePage.isEmpty());
-        Assertions.assertNull(accountTransactionFromServicePage.getContent().get(0));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> accountTransactionService.
+                getAccountTransaction(2, "097628372", Pageable.ofSize(10)));
+    }
+
+    @Test
+    public void getAccountTransaction_getAccounts_withRuntimeExceptionInRepository_throwsRuntimeException() {
+        when(accountTransactionRepository.findByAccountUserIdAndAccountAccountNumber(anyInt(), anyString(), any())).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class, () -> accountTransactionService.
+                getAccountTransaction(2, "097628372", Pageable.ofSize(10)));
     }
 
     private Page<AccountTransaction> getAccountTransactionPage() {

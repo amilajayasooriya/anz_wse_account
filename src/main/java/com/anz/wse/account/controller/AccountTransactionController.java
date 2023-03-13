@@ -29,7 +29,7 @@ public class AccountTransactionController {
     private final AccountTransactionService accountTransactionService;
     private final AuthService authService;
 
-    @GetMapping("/v1/account-transactions/{accountNumber}")
+    @GetMapping("/v1/accounts/{accountNumber}/transactions")
     public ResponseEntity<Page<AccountTransactionDTO>> getAccountTransaction(@PathVariable @Valid @Pattern(regexp = ACCOUNT_NUMBER,
             message = "Invalid account number format") final String accountNumber,
                                                                              @RequestParam(defaultValue = "0") int page,
@@ -37,10 +37,10 @@ public class AccountTransactionController {
                                                                              @RequestParam(defaultValue = "id") String sortBy,
                                                                              @RequestHeader(name = "x-authToken") String authToken,
                                                                              @RequestHeader(name = "x-correlationId") String correlationId) {
+        log.debug("message=\"Get accounts transactions request received\"");
 
         int userId = authService.getUserIdFromAuthToken(authToken);
 
-        log.debug("message=\"Get account transactions request received\"");
         Page<AccountTransactionDTO> accountTransactionDTOPage = accountTransactionService.getAccountTransaction(userId, accountNumber,
                         PageRequest.of(page, size, Sort.by(sortBy))).
                 map(accountTransactionDTO -> accountTransactionDTO.add(linkTo(methodOn(AccountController.class).

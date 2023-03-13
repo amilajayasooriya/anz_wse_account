@@ -1,7 +1,8 @@
 package com.anz.wse.account.service;
 
 import com.anz.wse.account.dto.AccountTransactionDTO;
-import com.anz.wse.account.model.AccountTransaction;
+import com.anz.wse.account.exception.ResourceNotFoundException;
+import com.anz.wse.account.repository.entity.AccountTransaction;
 import com.anz.wse.account.repository.AccountTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class AccountTransactionService {
                 findByAccountUserIdAndAccountAccountNumber(userId, accountNumber, pageable);
         if (accountTransactionPage.isEmpty()) {
             log.info("message=\"No account transactions found for the account number\"");
+            throw new ResourceNotFoundException("Transactions not found for the account");
         }
 
         return accountTransactionPage.map(accountTransaction -> modelMapper.map(accountTransaction, AccountTransactionDTO.class));

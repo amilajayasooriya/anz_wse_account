@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://aws.db.post:5214
+    url: jdbc:postgresql://aws.db.post:5214/account_prod_db
     username: prod_account
-    password: ENC(w2escwdeepafdsswdfdordfdd383hs==)
+    password: prod_password
     driverClassName: org.postgresql.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL95Dialect

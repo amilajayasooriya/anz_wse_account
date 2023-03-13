@@ -1,6 +1,6 @@
 package com.anz.wse.account.repository;
 
-import com.anz.wse.account.model.AccountTransaction;
+import com.anz.wse.account.repository.entity.AccountTransaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
