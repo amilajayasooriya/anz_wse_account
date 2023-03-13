@@ -1,6 +1,7 @@
 package blackbox.com.anz.wse.account.controller;
 
 import blackbox.com.anz.wse.account.controller.utills.LogUtils;
+import blackbox.com.anz.wse.account.controller.utills.PageUtils;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
@@ -49,7 +50,7 @@ public class AccountControllerTest {
                 andReturn();
 
         String pageString = result.getResponse().getContentAsString();
-        String contentString = getContentPart(pageString);
+        String contentString = PageUtils.getContentString(pageString);
         List<AccountDTO> accountDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
         });
 
@@ -70,7 +71,7 @@ public class AccountControllerTest {
                 andReturn();
 
         String pageString = result.getResponse().getContentAsString();
-        String contentString = getContentPart(pageString);
+        String contentString = PageUtils.getContentString(pageString);
         List<AccountDTO> accountDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
         });
 
@@ -90,7 +91,7 @@ public class AccountControllerTest {
                 andReturn();
 
         String pageString = result.getResponse().getContentAsString();
-        String contentString = getContentPart(pageString);
+        String contentString = PageUtils.getContentString(pageString);
         List<AccountDTO> accountDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
         });
 
@@ -109,7 +110,7 @@ public class AccountControllerTest {
                 andReturn();
 
         String pageString = result.getResponse().getContentAsString();
-        String contentString = getContentPart(pageString);
+        String contentString = PageUtils.getContentString(pageString);
         List<AccountDTO> accountDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
         });
         Assertions.assertTrue(accountDTOList.isEmpty());
@@ -129,7 +130,7 @@ public class AccountControllerTest {
                 andReturn();
 
         String pageString = result.getResponse().getContentAsString();
-        String contentString = getContentPart(pageString);
+        String contentString = PageUtils.getContentString(pageString);
         List<AccountDTO> accountDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
         });
         Assertions.assertTrue(accountDTOList.isEmpty());
@@ -174,7 +175,7 @@ public class AccountControllerTest {
 
     @Test
     public void get_accounts_no_missing_correlation_id_header() throws Exception {
-        final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/v1/accounts?page=0&size=10&sortBy=id").
+        final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/v1/accounts").
                         header("x-authToken", "jskdjebsjshepss:67")).
                 andDo(print()).
                 andExpect(status().isBadRequest()).
@@ -222,9 +223,5 @@ public class AccountControllerTest {
 
         String pageString = result.getResponse().getContentAsString();
         Assertions.assertTrue(pageString.contains("Invalid account number format"));
-    }
-
-    private String getContentPart(String pageString) {
-        return pageString.substring(pageString.indexOf("\"content\":") + "\"content\":".length(), pageString.indexOf(",\"pageable\":"));
     }
 }
