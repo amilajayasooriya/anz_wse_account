@@ -5,12 +5,12 @@ import blackbox.com.anz.wse.account.controller.utills.PageUtils;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.anz.wse.account.controller.AccountController;
 import com.anz.wse.account.dto.AccountDTO;
 import com.anz.wse.account.model.Currency;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -116,11 +116,10 @@ public class AccountControllerTest {
         Assertions.assertTrue(accountDTOList.isEmpty());
     }
 
-    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {"testCorrelation_id_1", "testCorrelation_id_1"})
     public void get_accounts_validate_logs_contains_correlation_id(String correlationId) throws Exception {
-        logAppender = LogUtils.setLogLevel((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME), new ListAppender<>());
+        logAppender = LogUtils.setLogLevel((Logger) LoggerFactory.getLogger(AccountController.class), new ListAppender<>());
 
         final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/v1/accounts").
                         header("x-authToken", "jskdjebsjshepss:67").
@@ -136,7 +135,7 @@ public class AccountControllerTest {
         Assertions.assertTrue(accountDTOList.isEmpty());
 
         List<ILoggingEvent> loggingEvents = logAppender.list;
-        Assertions.assertTrue(loggingEvents.stream().anyMatch(iLoggingEvent -> iLoggingEvent.getFormattedMessage().contains(correlationId)));
+        Assertions.assertTrue(loggingEvents.stream().anyMatch(iLoggingEvent -> iLoggingEvent.getMDCPropertyMap().getOrDefault("correlationId", "").contains(correlationId)));
         LogUtils.removeAppender((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME), logAppender);
     }
 

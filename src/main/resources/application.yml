@@ -6,10 +6,3 @@ server:
 spring:
   application:
     name: wse-accounts
-
-logging:
-  file:
-    name: accounts-service.log
-  pattern:
-    console: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"
-    file: "%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n"

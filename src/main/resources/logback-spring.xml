@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/accounts-service.log</file>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} CorrelationId -- %X{correlationId} --- %msg %n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>accounts-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10MB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="io.netty" level="INFO"/>
+    <logger name="org.apache" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="RollingFile" />
+        </root>
+    </springProfile>
+    <springProfile name="dev | test">
+        <root level="DEBUG">
+            <appender-ref ref="Console" />
+            <appender-ref ref="RollingFile" />
+        </root>
+    </springProfile>
+</configuration>

@@ -5,6 +5,7 @@ import blackbox.com.anz.wse.account.controller.utills.PageUtils;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.anz.wse.account.controller.AccountTransactionController;
 import com.anz.wse.account.dto.AccountTransactionDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -184,6 +186,32 @@ public class AccountTransactionControllerTest {
         List<ILoggingEvent> loggingEvents = logAppender.list;
 
         Assertions.assertTrue(loggingEvents.stream().anyMatch(iLoggingEvent -> iLoggingEvent.getFormattedMessage().contains(errorLog)));
+        LogUtils.removeAppender((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME), logAppender);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"testCorrelation_id_1", "testCorrelation_id_1"})
+    public void get_accounts_validate_logs_contains_correlation_id(String correlationId) throws Exception {
+        logAppender = LogUtils.setLogLevel((Logger) LoggerFactory.getLogger(AccountTransactionController.class), new ListAppender<>());
+
+        final String accountNumber = "100209209";
+        final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/v1/account-transactions/{accountNumber}", accountNumber).
+                        header("x-authToken", "jskdjebsjshepss:67").
+                        header("x-correlationId", correlationId)).
+                andDo(print()).
+                andExpect(status().isOk()).
+                andReturn();
+
+        String pageString = result.getResponse().getContentAsString();
+        String contentString = PageUtils.getContentString(pageString);
+
+        List<AccountTransactionDTO> accountTransactionDTOList = objectMapper.readValue(contentString, new TypeReference<>() {
+        });
+
+        Assertions.assertTrue(accountTransactionDTOList.isEmpty());
+
+        List<ILoggingEvent> loggingEvents = logAppender.list;
+        Assertions.assertTrue(loggingEvents.stream().anyMatch(iLoggingEvent -> iLoggingEvent.getMDCPropertyMap().getOrDefault("correlationId", "").contains(correlationId)));
         LogUtils.removeAppender((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME), logAppender);
     }
 }

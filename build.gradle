@@ -27,8 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
 
-/*	implementation 'org.springframework.boot:spring-boot-starter-security'*/
-/*	implementation 'org.flywaydb:flyway-core'*/
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -49,4 +47,9 @@ springBoot {
 tasks.register('runDev') {
 	dependsOn 'bootRun'
 	bootRun.systemProperty('spring.profiles.active', 'dev')
+}
+
+tasks.register('runProd') {
+	dependsOn 'bootRun'
+	bootRun.systemProperty('spring.profiles.active', 'prod')
 }
