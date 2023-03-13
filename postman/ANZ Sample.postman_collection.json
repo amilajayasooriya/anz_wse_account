@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "667486f6-f6b7-4b51-a811-97bcf2f32bd6",
+		"name": "ANZ Sample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "account",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-authToken",
+						"value": "ksujhse:1",
+						"type": "default"
+					},
+					{
+						"key": "x-correlationId",
+						"value": "correlation1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:10910/wse-accounts/v1/accounts?page=0&size=10&sortBy=currency",
+					"host": [
+						"localhost"
+					],
+					"port": "10910",
+					"path": [
+						"wse-accounts",
+						"v1",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sortBy",
+							"value": "currency"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "account Transaction",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-authToken",
+						"value": "ksujhse:1",
+						"type": "default"
+					},
+					{
+						"key": "x-correlationId",
+						"value": "correlation1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:10910/wse-accounts/v1/account-transactions/585309209?page=0&size=2&sortBy=valueDate",
+					"host": [
+						"localhost"
+					],
+					"port": "10910",
+					"path": [
+						"wse-accounts",
+						"v1",
+						"account-transactions",
+						"585309209"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						},
+						{
+							"key": "sortBy",
+							"value": "valueDate"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get one account",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-authToken",
+						"value": "ksujhse:1",
+						"type": "default"
+					},
+					{
+						"key": "x-correlationId",
+						"value": "correlation1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:10910/wse-accounts/v1/accounts/585309209",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10910",
+					"path": [
+						"wse-accounts",
+						"v1",
+						"accounts",
+						"585309209"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
