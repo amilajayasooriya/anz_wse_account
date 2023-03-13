@@ -18,11 +18,16 @@ http://localhost:10910/wse-accounts/v3/api-docs
 
 
 # How to Start the app in the dev profile
-`execute ./gradlew runDev`
+execute `./gradlew runDev`
 
 ## How to Start the app in the prod profile
-`execute ./gradlew runProd`
+execute `./gradlew runProd`
 
+## How execute tests
+execute `./gradlew test`
+
+
+<br />
 Postman api collection is attached in `/postman` directory
 
 Log files are configured to save in `/logs` directory
